@@ -49,6 +49,8 @@ RUN apt-get -qqy update \
     && apt install unzip \
     && apt-get autoclean \
     && apt-get autoremove \
+    && apt install curl \
+    && curl -s https://packagecloud.io/install/repositories/pufferpanel/pufferpanel/script.deb.sh | os=ubuntu dist=jammy bash
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # COPY conf.d/* /etc/supervisor/conf.d/
