@@ -27,6 +27,7 @@ RUN  mkdir -p /var/run/supervisor /var/log/supervisor \
 
 # Creating base directory for Xvfb
 RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
+EXPOSE 25565
 
 CMD ["/opt/bin/entry_point.sh"]
 
@@ -74,9 +75,18 @@ ENV SCREEN_WIDTH=1280 \
 #     && apt-get -qqy install \
 #         xserver-xorg xserver-xorg-video-fbdev xinit pciutils xinput xfonts-100dpi xfonts-75dpi xfonts-scalable kde-plasma-desktop
 
+FROM ubuntu-utilities as ubuntu-ui
+
 RUN apt-get update -qqy \
     && apt-get -qqy install --no-install-recommends \
         dbus-x11 xfce4 \
+        openjdk-8-jre \
+        wget \
+    && wget https://dl.pufferpanel.com/pufferpanel-2.2.3.deb \
+    && apt-get -qqy install --no-install-recommends ./pufferpanel-2.2.3.deb \
+    && curl -s https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -o /tmp/ngrok.zip \
+    && unzip /tmp/ngrok.zip -d /usr/local/bin \
+    && chmod +x /usr/local/bin/ngrok \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
