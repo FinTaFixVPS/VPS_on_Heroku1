@@ -39,3 +39,8 @@ function shutdown {
 
 trap shutdown SIGTERM SIGINT
 wait ${SUPERVISOR_PID}
+# Start Pufferpanel
+service pufferpanel start
+
+# Start Minecraft
+screen -dmS minecraft bash -c 'cd /home/minecraft/server && java -Xmx2G -jar server.jar nogui'
